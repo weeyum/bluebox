@@ -25,7 +25,6 @@ def hydrate_mail_boxes(zipcode, state)
       resp = JSON.parse(resp.body)
       resp['locations'].each do |l|
         MAILBOXES[l['locationID']] ||= l.slice(*SAVED_FIELDS)
-      )
       end
     else
       puts "skipping zipcode #{zipcode}, state: #{state}, status code: #{resp.status}"
@@ -44,12 +43,12 @@ end
 ZIPCODES.reject do |obj|
   obj['state'] == 'VI' || obj['state'] == "PR" || obj['zip_code'] < 10000
 end.each_with_index do |obj, n|
-  if n % 10 == 0
+  if n % 50 == 0
     puts "#{Time.now.strftime('%m-%e-%y %H:%M')} processed #{n} zipcodes, have #{MAILBOXES.keys.length} mailboxes"
   end
 
 
-  if threads.length >= 2
+  if threads.length >= 10
     threads.map(&:join)
     threads.clear
   end
