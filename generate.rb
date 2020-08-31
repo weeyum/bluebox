@@ -4,7 +4,7 @@ require 'json'
 ZIPCODES = JSON.parse(Faraday.get('https://raw.githubusercontent.com/millbj92/US-Zip-Codes-JSON/master/USCities.json').body)
 FIND_MAILBOXES_URL = 'https://tools.usps.com/UspsToolsRestServices/rest/POLocator/findLocations'
 MAILBOXES = {}
-
+SAVED_FIELDS = %w(locationID locationName locationType radius address1 city state zip5 latitude longitude distance)
 threads = []
 
 def hydrate_mail_boxes(zipcode, state)
@@ -24,7 +24,8 @@ def hydrate_mail_boxes(zipcode, state)
     if resp.status == 200 
       resp = JSON.parse(resp.body)
       resp['locations'].each do |l|
-        MAILBOXES[l['locationID']] ||= l
+        MAILBOXES[l['locationID']] ||= l.slice(*SAVED_FIELDS)
+      )
       end
     else
       puts "skipping zipcode #{zipcode}, state: #{state}, status code: #{resp.status}"
@@ -58,4 +59,4 @@ end.each_with_index do |obj, n|
   end
 end
 
-File.write("data/#{Time.now.strftime('%m-%e-%y')}.json", MAILBOXES.values.to_json)
+File.write("data/#{Time.now.strftime('%m-%e-%y')}.json", MAILBOXES.to_json)
