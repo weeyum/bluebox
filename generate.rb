@@ -44,7 +44,7 @@ ZIPCODES.reject do |obj|
   obj['state'] == 'VI' || obj['state'] == "PR" || obj['zip_code'] < 10000
 end.each_with_index do |obj, n|
   if n % 50 == 0
-    puts "#{Time.now.strftime('%m-%e-%y %H:%M')} processed #{n} zipcodes, have #{MAILBOXES.keys.length} mailboxes"
+    puts "#{Time.now.strftime('%m-%d-%y %H:%M')} processed #{n} zipcodes, have #{MAILBOXES.keys.length} mailboxes"
   end
 
 
@@ -58,4 +58,4 @@ end.each_with_index do |obj, n|
   end
 end
 
-File.write("data/#{Time.now.strftime('%m-%e-%y')}.json", MAILBOXES.to_json)
+File.write("data/#{Time.now.strftime('%m-%d-%y')}.json", MAILBOXES.to_json)
