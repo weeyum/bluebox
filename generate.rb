@@ -48,7 +48,7 @@ end.each_with_index do |obj, n|
   end
 
 
-  if threads.length >= 10
+  if threads.length >= 2
     threads.map(&:join)
     threads.clear
   end
