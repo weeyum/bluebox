@@ -29,5 +29,14 @@ if first.keys.length >= second.keys.length
     item = first[key]
     puts "\t #{item['locationID']} | #{item['state']} | #{item['address1']}, #{item['city']} #{item['state']}"
   end
+else 
+  puts "#{ARGV[0]} has less mailboxes than #{ARGV[1]} by #{second.keys.length - first.keys.length}"
+  sleep 5
+  puts "\nthese are the missing mailboxes:\n"
+  diff = second.keys - first.keys
 
+  diff.each do |key|
+    item = second[key]
+    puts "\t #{item['locationID']} | #{item['state']} | #{item['address1']}, #{item['city']} #{item['state']}"
+  end
 end
